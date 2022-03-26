@@ -1,7 +1,7 @@
 [features]
 seeds = false
 [programs.localnet]
-backend = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+backend = "9ibCEh3Fb39Q9cDAjSamePo2bY3BdU6fXRfSWjVLyUqo"
 
 [registry]
 url = "https://anchor.projectserum.com"
