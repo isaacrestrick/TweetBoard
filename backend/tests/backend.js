@@ -10,13 +10,19 @@ const main = async() => {
 
   const program = anchor.workspace.Backend;
   const baseAccount = anchor.web3.Keypair.generate();
-  let tx = await program.rpc.start({
+  let tx = await program.rpc.startProgram({
     accounts: {
       baseAccount: baseAccount.publicKey,
       user: provider.wallet.publicKey,
       systemProgram: SystemProgram.programId,
     },
     signers: [baseAccount],
+  });
+  let tx2 = await program.rpc.registerUser({
+    accounts: {
+      baseAccount: baseAccount.publicKey,
+      user: provider.wallet.publicKey,
+    }
   });
   console.log("📝 Your transaction signature", tx);
 
@@ -29,14 +35,14 @@ const main = async() => {
   */
 
   // You'll need to now pass a tweet link to the function! You'll also need to pass in the user submitting the tweet!
-  await program.rpc.submitTweet(new BN(1),new BN(2),new BN(3), {
+  await program.rpc.submitTweet("123",new BN(3),new BN(3), {
     accounts: {
       baseAccount: baseAccount.publicKey,
       user: provider.wallet.publicKey,
     },
   });
 
-  await program.rpc.resubmitTweet(new BN(1), {
+  await program.rpc.resubmitTweet("123", {
     accounts: {
       baseAccount: baseAccount.publicKey,
       user: provider.wallet.publicKey,

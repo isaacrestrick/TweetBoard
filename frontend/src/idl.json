@@ -3,7 +3,7 @@
   "name": "backend",
   "instructions": [
     {
-      "name": "start",
+      "name": "startProgram",
       "accounts": [
         {
           "name": "baseAccount",
@@ -19,6 +19,23 @@
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
+        }
+      ],
+      "args": [],
+      "returns": null
+    },
+    {
+      "name": "registerUser",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         }
       ],
       "args": [],
@@ -41,7 +58,7 @@
       "args": [
         {
           "name": "tweetId",
-          "type": "u64"
+          "type": "string"
         },
         {
           "name": "requiredEffort",
@@ -71,7 +88,7 @@
       "args": [
         {
           "name": "tweetId",
-          "type": "u64"
+          "type": "string"
         }
       ],
       "returns": null
@@ -127,7 +144,7 @@
         "fields": [
           {
             "name": "tweetId",
-            "type": "u64"
+            "type": "string"
           },
           {
             "name": "author",

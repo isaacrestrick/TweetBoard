@@ -6,16 +6,11 @@ import {
   Program, Provider, web3, BN
 } from '@project-serum/anchor';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import idl from './idl.json';
 import kp from './keypair.json'
-
-function TweetBox(props) {
-  return <div>
-    <div className='wrapper' color='white'><h1>#{props.rank}</h1></div>
-    <div className='wrapper'><TwitterTweetEmbed tweetId={getTweetID(props.link)}/></div>
-    <div className='wrapper'><h3>Posted by {props.poster}</h3></div>
-  </div>
-}
 
 // SystemProgram is a reference to the Solana runtime!
 const { SystemProgram, Keypair } = web3;
@@ -44,8 +39,8 @@ function getTweetID(tweetURL) {
 }
 
 function isResubmission(tweet_id,list_of_tweets) {
-  for (const tweet in list_of_tweets) {
-    if (tweet['tweetId'] === tweet_id) {
+  for (let i = 0; i < list_of_tweets.length; i++) { 
+    if (list_of_tweets[i] === tweet_id) {
       return true;
     }
   }
@@ -105,8 +100,28 @@ const [tweets, setTweets] = useState([]);
 
   if (solana) {
     const response = await solana.connect();
+
+    //register User
+    const provider = getProvider();
+    const program = new Program(idl, programID, provider);
+    await program.rpc.registerUser({
+      accounts: {
+        baseAccount: baseAccount.publicKey,
+        user: provider.wallet.publicKey,
+      }
+    });
+
     console.log('Connected with Public Key:', response.publicKey.toString());
     setWalletAddress(response.publicKey.toString());
+  }
+};
+
+const disconnectWallet = async () => {
+  console.log('trying to dc')
+  const { solana } = window;
+  if (solana) {
+    const response = await solana.disconnect();
+    setWalletAddress(null);
   }
 };
 
@@ -124,7 +139,7 @@ const sendTweet = async () => {
     const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
     
     const tweetID = getTweetID(inputValueTweet)
-    const resubmission = isResubmission(tweetID, account.tweets)
+    const resubmission = isResubmission(tweetID, tweets)
     if (!resubmission) {
       if (inputValueEffort.length === 0 || inputValueReward === 0) {
         console.log("need effort & reward for a new tweet")
@@ -133,7 +148,7 @@ const sendTweet = async () => {
       setInputValueTweet('');
       setInputValueEffort('');
       setInputValueReward('');
-      await program.rpc.submitTweet(new BN((tweetID)),new BN((inputValueEffort)),new BN((inputValueReward)), {
+      await program.rpc.submitTweet(tweetID,new BN((inputValueEffort)),new BN((inputValueReward)), {
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
@@ -141,7 +156,7 @@ const sendTweet = async () => {
       });
     }
     else {
-      await program.rpc.resubmitTweet(new BN((tweetID)), {
+      await program.rpc.resubmitTweet(tweetID, {
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey,
@@ -192,7 +207,7 @@ const createTweetAccount = async () => {
   try {
     const provider = getProvider();
     const program = new Program(idl, programID, provider);
-    await program.rpc.start({
+    await program.rpc.startProgram({
       accounts: {
         baseAccount: baseAccount.publicKey,
         user: provider.wallet.publicKey,
@@ -253,9 +268,9 @@ const renderConnectedContainer = () => {
           </form>
           <div className="gif-grid">
             {/* We use index as the key instead, also, the src is now item.gifLink */}
-            {tweets.map((item, index) => (
-              <div className="gif-item" key={index}>
-                <TwitterTweetEmbed tweetId={(item.tweetId)}/>
+            {tweets.map(tweetID => (
+              <div className="gif-item" key={tweetID}>
+                <TwitterTweetEmbed tweetId={tweetID}/>
               </div>
             ))}
           </div>
@@ -264,7 +279,7 @@ const renderConnectedContainer = () => {
     }
   }
   //<img src={item.gifLink} />
-  //                <TwitterTweetEmbed tweetId={getTweetID(item.gifLink)}/>
+  //                <TwitterTweetEmbed tweetId={getTweetID(item.gifLink)}/> <TwitterTweetEmbed tweetId={tweetID}/>
 
 
   /*
@@ -286,7 +301,18 @@ const renderConnectedContainer = () => {
       const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
       
       console.log("Got the account", account)
-      setTweets(account.tweets)
+      var ids = []
+      console.log('i have ',account.tokenRegistry[0]['tokens']['words'],' tokens')
+
+      for (let i = 0; i < account.tweets.length; i++) { 
+        ids.push((account.tweets[i]['tweetId']))
+        console.log('required effort',account.tweets[i]['requiredEffort']['words'])
+        console.log('current effort',account.tweets[i]['currentEffort']['words'])
+        console.log('this tweet is locked: ',account.tweets[i]['locked'])
+      }
+
+      setTweets(ids)
+      console.log(ids)
   
     } catch (error) {
       console.log("Error in getTweets: ", error)
@@ -303,12 +329,26 @@ const renderConnectedContainer = () => {
 
   return (
     <div className="App">
+      <ListGroup>
+        <ListGroup.Item><h1 text='white'>Submission rules</h1></ListGroup.Item>
+        <ListGroup.Item><p text='white'>1. Each wallet is given two tweet tokens upon registration.</p></ListGroup.Item>
+        <ListGroup.Item><p text='white'>2. Submitting a new tweet to the wall requires spending a tweet token. Resubmitting an existing tweet does not</p></ListGroup.Item>
+        <ListGroup.Item><p text='white'>3. When a new tweet submitted, the submitter must provide a) the amount of resubmissions it takes to mine the tweet (effort) and b) the amount of tweet tokens (reward) awarded to the miner of the tweet</p></ListGroup.Item>
+        <ListGroup.Item><p text='white'>4. The miner of the tweet is defined as the wallet that provides the final resubmission needed to mine the tweet. The submitter cannot be the miner.</p></ListGroup.Item>
+        <ListGroup.Item><p text='white'>5. The effort and reward of a tweet are only visible to the submitter, and hidden from other wallets.</p></ListGroup.Item>
+        <ListGroup.Item><p text='white'>6. The current effort (# of resubmissions so far) of a token is red if the token is unmined, and green if it is mined. Once a token is mined, further resubmissions do nothing.</p></ListGroup.Item>
+        <ListGroup.Item><p text='white'>7. Rules 4 and 6 are not implemented yet. Have fun!</p></ListGroup.Item>
+      </ListGroup>
 			{/* This was solely added for some styling fanciness */}
+      <button
+      className="cta-button connect-wallet-button"
+      onClick={disconnectWallet}
+    >Disconnect</button>
 			<div className={walletAddress ? 'authed-container' : 'container'}>
         <div className="header-container">
-          <p className="header">Something Portal</p>
+          <p className="header">Tweet Portal</p>
           <p className="sub-text">
-            Something collection
+            Tweet collection
           </p>
           {/* Add the condition to show this only if we don't have a wallet address */}
           {!walletAddress && renderNotConnectedContainer()}
