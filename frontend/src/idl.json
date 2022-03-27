@@ -1,0 +1,163 @@
+{
+  "version": "0.1.0",
+  "name": "backend",
+  "instructions": [
+    {
+      "name": "start",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [],
+      "returns": null
+    },
+    {
+      "name": "submitTweet",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "tweetId",
+          "type": "u64"
+        },
+        {
+          "name": "requiredEffort",
+          "type": "u64"
+        },
+        {
+          "name": "reward",
+          "type": "u64"
+        }
+      ],
+      "returns": null
+    },
+    {
+      "name": "resubmitTweet",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "tweetId",
+          "type": "u64"
+        }
+      ],
+      "returns": null
+    }
+  ],
+  "accounts": [
+    {
+      "name": "BaseAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tweets",
+            "type": {
+              "vec": {
+                "defined": "TweetStruct"
+              }
+            }
+          },
+          {
+            "name": "tokenRegistry",
+            "type": {
+              "vec": {
+                "defined": "TokenBalance"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "TokenBalance",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tokens",
+            "type": "u64"
+          },
+          {
+            "name": "userAddress",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TweetStruct",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tweetId",
+            "type": "u64"
+          },
+          {
+            "name": "author",
+            "type": "publicKey"
+          },
+          {
+            "name": "miner",
+            "type": "publicKey"
+          },
+          {
+            "name": "requiredEffort",
+            "type": "u64"
+          },
+          {
+            "name": "currentEffort",
+            "type": "u64"
+          },
+          {
+            "name": "reward",
+            "type": "u64"
+          },
+          {
+            "name": "locked",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "address": "9ibCEh3Fb39Q9cDAjSamePo2bY3BdU6fXRfSWjVLyUqo"
+  }
+}

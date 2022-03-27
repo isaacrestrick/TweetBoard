@@ -1,13 +1,13 @@
 [features]
 seeds = false
-[programs.localnet]
+[programs.devnet]
 backend = "9ibCEh3Fb39Q9cDAjSamePo2bY3BdU6fXRfSWjVLyUqo"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/isaacrestrick/.config/solana/id.json"
 
 [scripts]
