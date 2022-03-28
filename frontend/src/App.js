@@ -13,6 +13,11 @@ import Accordion from 'react-bootstrap/Accordion';
 import idl from './idl.json';
 import kp from './keypair.json'
 
+
+//UNCOMMENT FOR TESTING!
+console.log = function() {}
+
+
 // SystemProgram is a reference to the Solana runtime!
 const { SystemProgram, Keypair } = web3;
 
