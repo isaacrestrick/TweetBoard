@@ -278,7 +278,7 @@ function Tokens() {
 }
 
 function Disconnect() {
-  if (tweets === null) {
+  if (walletAddress === null) {
     return <></>
   }
   else {
