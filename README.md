@@ -14,3 +14,16 @@ To see how it works and submit some tweets:
 
 This project was based on the following tutorial from buildspace: 
 https://buildspace.so/learn-solana
+
+
+Some images of the site:
+
+wallet connect screen:
+![connect wallet](https://github.com/isaacrestrick/TweetBoard/blob/main/images_for_readme/connect_wallet.png)
+
+main page (some tweets displayed):
+![tweets](https://github.com/isaacrestrick/TweetBoard/blob/main/images_for_readme/tweets.png)
+
+
+main page (rules displayed):
+![rules](https://github.com/isaacrestrick/TweetBoard/blob/main/images_for_readme/rules.png)
