@@ -7,7 +7,7 @@ The guidelines are (poorly) analagous to the way bitcoin works.
 To see how it works and submit some tweets:
 1) Make sure you have a phantom solana wallet that is connected to devnet
 2) Airdrop some solana tokens to your wallet if needed
-3) Go to: (url I am hosting at)
+3) Go to: https://lustrous-twilight-4ab792.netlify.app/
 4) Login with a phantom solana wallet
 5) Read the guidelines
 6) Have fun!
