@@ -1,8 +1,10 @@
 /* this is the final priority */
 
+
+/*  background-color: #1a202c; */
 .App {
   height: 100vh;
-  background-color: #1a202c;
+  background-color: #4578df;
   overflow: scroll;
   text-align: center;
 }
@@ -31,6 +33,7 @@
   padding: 30px;
 }
 
+/*color: white;*/
 .header {
   margin: 0;
   font-size: 50px;
@@ -38,11 +41,13 @@
   color: white;
 }
 
+/*color: white;*/
 .sub-text {
   font-size: 25px;
   color: white;
 }
 
+/*background: -webkit-linear-gradient(left, #60c657 30%, #35aee2 60%);*/
 .gradient-text {
   background: -webkit-linear-gradient(left, #60c657 30%, #35aee2 60%);
   background-clip: text;
@@ -63,14 +68,16 @@
   color: white;
 }
 
+/*background: -webkit-linear-gradient(left, #60c657, #35aee2);*/
 .connect-wallet-button {
-  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background: green;
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
 }
 
-.submit-gif-button {
-  background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
+/*background: -webkit-linear-gradient(left, #4e44ce, #35aee2);*/
+.submit-tweet-button {
+  background: green;
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
   margin-left: 10px;
@@ -98,7 +105,7 @@
   font-weight: bold;
 }
 
-.gif-grid {
+.tweet-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   grid-gap: 1.5rem;
@@ -107,7 +114,7 @@
   padding: 0;
 }
 
-.gif-grid .gif-item {
+.tweet-grid .tweet-item {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -115,13 +122,32 @@
   align-self: center;
 }
 
-.gif-item img {
+.tweetbox-mined {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  background-color: green;
+}
+
+.tweetbox-unmined {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  background-color: yellow;
+}
+
+.tweet-item img {
   width: 100%;
   height: 300px;
   border-radius: 10px;
   object-fit: cover;
 }
 
+/*  background-color: rgba(0, 0, 0, 0.25);*/
 .connected-container input[type='text'] {
   display: inline-block;
   color: white;
@@ -130,7 +156,7 @@
   height: 60px;
   font-size: 16px;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(5, 24, 49, 0.25);
   border: none;
   border-radius: 10px;
   margin: 50px auto;
