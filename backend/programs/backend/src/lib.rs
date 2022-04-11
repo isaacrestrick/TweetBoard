@@ -88,8 +88,7 @@ pub mod backend {
     //context
     let base_account = &mut ctx.accounts.base_account;
     let user = &mut ctx.accounts.user;
-    //this aint gon change shit homie. use veclen. or a fucking hashamp
-    //also... mutability?
+    //vec len or hashmap down the line maybe
 
     for idx in 0..base_account.tweets.len() {
       if tweet_id.to_string().eq(&base_account.tweets[idx].tweet_id) {
@@ -98,7 +97,7 @@ pub mod backend {
         }
         else if base_account.tweets[idx].current_effort + 1 == base_account.tweets[idx].required_effort {
           base_account.tweets[idx].miner = *user.to_account_info().key;//Some(*user.to_account_info().key);
-          //easy fix for some.. cant mine your own!f
+          //easy fix for some.. cant mine your own!
           if base_account.tweets[idx].miner.eq(&base_account.tweets[idx].author) {
             //this doesnt work wait... it does... because uhhh
             return Ok(())
@@ -159,14 +158,14 @@ pub struct ResubmitTweet<'info> {
   pub user: Signer<'info>,
 }
 
-// Create a custom struct for us to work with.
+// Token balance struct
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct TokenBalance {
     pub tokens: u64,
     pub user_address: Pubkey,
 }
 
-// Create a custom struct for us to work with.
+// Tweet struct
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct TweetStruct {
     pub tweet_id: String,
@@ -178,6 +177,7 @@ pub struct TweetStruct {
     pub locked: bool
 }
 
+// the base account
 #[account]
 pub struct BaseAccount {
     pub tweets: Vec<TweetStruct>,

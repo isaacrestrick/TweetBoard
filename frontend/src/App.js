@@ -9,6 +9,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Accordion from 'react-bootstrap/Accordion';
+import Form from 'react-bootstrap/Form';
 
 import idl from './idl.json';
 import kp from './keypair.json'
@@ -18,21 +19,21 @@ import kp from './keypair.json'
 console.log = function() {}
 
 
-// SystemProgram is a reference to the Solana runtime!
+// SystemProgram is a reference to the Solana runtime
 const { SystemProgram, Keypair } = web3;
 
-// Create a keypair for the account that will hold the tweet data.
+// Create a keypair for the account that will hold the tweet data
 const arr = Object.values(kp._keypair.secretKey)
 const secret = new Uint8Array(arr)
 const baseAccount = web3.Keypair.fromSecretKey(secret)
 
-// Get our program's id from the IDL file.
+// Get program's id from the IDL file
 const programID = new PublicKey(idl.metadata.address);
 
-// Set our network to devnet.
+// Set network to devnet
 const network = clusterApiUrl('devnet');
 
-// Controls how we want to acknowledge when a transaction is "done".
+// Controls how to acknowledge when a transaction is "done"
 const opts = {
   preflightCommitment: "processed"
 }
@@ -63,10 +64,7 @@ const [tokens, setTokens] = useState(0);
 
 const [tweets, setTweets] = useState([]);
 
-  /*
-   * This function holds the logic for deciding if a Phantom Wallet is
-   * connected or not
-   */
+  // checks if phantom wallet is connected
   const checkIfWalletIsConnected = async () => {
     try {
       const { solana } = window;
@@ -75,19 +73,13 @@ const [tweets, setTweets] = useState([]);
         if (solana.isPhantom) {
           console.log('Phantom wallet found!');
 
-        /*
-         * The solana object gives us a function that will allow us to
-         * connect directly with the user's wallet!
-         */
+        
           const response = await solana.connect({ onlyIfTrusted: true });
           console.log(
             'Connected with Public Key:',
             response.publicKey.toString()
           );
 
-          /*
-           * Set the user's publicKey in state to be used later!
-           */
           setWalletAddress(response.publicKey.toString());
         }
       } else {
@@ -98,10 +90,7 @@ const [tweets, setTweets] = useState([]);
     }
   };
 
-  /*
-   * Let's define this method so our code doesn't break.
-   * We will write the logic for this next!
-   */
+  // connects wallet
   const connectWallet = async () => {
   const { solana } = window;
 
@@ -175,10 +164,7 @@ const sendTweet = async () => {
     console.log("Error sending tweet:", error)
   }
 };
-  /*
-   * We want to render this UI when the user hasn't connected
-   * their wallet to our app yet.
-   */
+  // screen to render when a wallet is not yet connected
   const renderNotConnectedContainer = () => (
     <button
       className="cta-button connect-wallet-button"
@@ -296,7 +282,7 @@ function Disconnect() {
 }
 
 const renderConnectedContainer = () => {
-  // If we hit this, it means the program account hasn't been initialized.
+  // in this case the program account is not initialized
     if (tweets === null) {
       return (
         <div className="connected-container">
@@ -306,8 +292,7 @@ const renderConnectedContainer = () => {
         </div>
       )
     } 
-    //conver the things
-    // Otherwise, we're good! Account exists. User can submit tweets.
+    // base account exists, can submit tweets
     else {
       return(
         <div className="connected-container">
@@ -376,10 +361,7 @@ const renderConnectedContainer = () => {
 
 */
 
-  /*
-   * When our component first mounts, let's check to see if we have a connected
-   * Phantom Wallet
-   */
+  // see if wallet is connected when page loads. useEffect
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletIsConnected();
@@ -449,7 +431,7 @@ const renderConnectedContainer = () => {
 </Accordion>
 
       
-			{/* This was solely added for some styling fanciness */}
+			{}
       
       <Disconnect />
       
@@ -461,9 +443,7 @@ const renderConnectedContainer = () => {
           </p>
           <Tokens />
           
-          {/* Add the condition to show this only if we don't have a wallet address */}
           {!walletAddress && renderNotConnectedContainer()}
-          {/* We just need to add the inverse here! */}
         {walletAddress && renderConnectedContainer()}
         </div>
       </div>
