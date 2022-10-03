@@ -1,5 +1,5 @@
 # TweetBoard
-Solana DApp with a React.js frontend which will allow users to submit tweets to a public wall. It is on Solana's devenet.
+Solana DApp with a React.js frontend which will allow users to submit tweets to a public wall. It is on Solana's devnet.
 However, submission of tweets is not that easy.
 There are some goofy guidelines that need to be followed to submit a tweet.
 The guidelines are (poorly) analagous to the way bitcoin works.
